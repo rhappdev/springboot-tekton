@@ -1,0 +1,20 @@
+{{- if .Values.route }}
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "springboot.fullname" . }}
+  labels:
+    {{- include "springboot.labels" . | nindent 4 }}
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: {{ include "springboot.fullname" . }}
+    weight: 90
+  wildcardPolicy: None
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+{{ end }}
